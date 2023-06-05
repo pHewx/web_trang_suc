@@ -53,17 +53,20 @@
             </form>
         </div>
     </div>
-    <div class="d-flex flex-column justify-content-center" style=" background-color: #F8F7F4; padding: 63px 16px ;
-" >
-        <h3 class="text-center" style="font-size: 32px;line-height: 32px;">CƠ SỞ</h3>
+
+    <!-- Mã HTML cho phần các cơ sở -->
+    <div class="d-flex flex-column justify-content-center" style=" background-color: #F8F7F4; padding: 63px 16px;" >
+        <h3 class="title">CƠ SỞ</h3>
         <p class="description">Trải dài từ Bắc ra Nam</p>
         <div class="row d-flex justify-content-center gap-3">
-            <div id="map" class="col-md-4"></div>
-            <div id="stores" class="col-md-4">
+            <div id="map" class="col-md-4 col-lg-3"></div>
+            <div id="storesContainer" class="col-md-4 col-lg-3">
                 <div class ="storeList"></div>
             </div>
         </div>
     </div>
+    <!--  -->
+
     <div class="footer_end" style="padding: 40px 0">
 
         <div class="row container">
@@ -88,9 +91,6 @@
                     ';
             }
         ?>
-            
-
-           
         </div>
 
     </div>
@@ -111,11 +111,12 @@
 <script>
     AOS.init();
 </script>
+
+<!-- Phần code hiển thị bản đồ và tạo danh sách cơ sở-->
 <script>
     const storeListElement = document.querySelector(".storeList");
 
-            console.log(storeListElement)
-
+    // Dữ liệu mẫu 
     const stores =[
         {
             label: 'HANOI STORES',
@@ -158,7 +159,9 @@
         }
     ]
 
-    let html = stores.map(store => {
+    // Hàm tạo danh sách cơ sở
+    function createStoreList() {
+        let html = stores.map(store => {
         return `
             <div>
                 <p class="label">${store.label}</p>
@@ -169,25 +172,65 @@
                 </ul>
             </div>
         `
-    }).join("");
+        }).join("");    
 
-    console.log(html)
+        storeListElement.innerHTML = html;
+    }
 
-    storeListElement.innerHTML = html;
+    // Hàm khởi tạo bản đồ
+    function initMap() {
+    var map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 21.0168864, lng: 105.7855574 },
+        zoom: 12
+    });
 
+        new google.maps.Marker({
+            position: {lat : 21.019518979681365, lng: 105.83600505259083},
+            map: map,
+        });
 
+        new google.maps.Marker({
+            position: {lat : 21.03163913465346, lng: 105.85231836767251},
+            map: map,
+        });
 
+        new google.maps.Marker({
+            position: {lat : 21.019518979681365, lng: 105.82401826608542},
+            map: map,
+        });
 
-function initMap() {
-  var map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 21.0168864, lng: 105.7855574 },
-    zoom: 12
-  });
-}
+        new google.maps.Marker({
+            position: {lat :21.03136585278573, lng: 105.80041611981497},
+            map: map,
+        });
+
+        new google.maps.Marker({
+            position: {lat : 20.997796657548264, lng: 105.81155840841363},
+            map: map,
+        });
+
+        new google.maps.Marker({
+            position: {lat : 10.787714213273707, lng: 106.67886529470891},
+            map: map,
+        });
+
+        new google.maps.Marker({
+        position: {lat :10.829996782053396, lng: 106.67077751005088},
+        map: map,
+    });
+    }
+
+    // Hàm chính chạy chương chình
+    function start(){
+        createStoreList();
+    }
+
+    start();
 </script>
 <script src="./js/sanpham.js?<?php echo time(); ?>"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZUfNCb9pYD-duM2Oq09tQDAtpxt9n2sE&callback=initMap" async defer></script>
 
+<!-- Link tới google map api để lấy dữ liệu bản đồ -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZUfNCb9pYD-duM2Oq09tQDAtpxt9n2sE&callback=initMap" async defer></script>
 </body>
 
 </html>
